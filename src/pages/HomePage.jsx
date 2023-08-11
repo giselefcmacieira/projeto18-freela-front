@@ -1,31 +1,48 @@
 import { styled } from "styled-components"
 import Header from "../components/Header";
 import Logo from "../assets/logo-transparente-croped.png"
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../constants/urls";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 
 export default function HomePage(){
-    const user = JSON.parse(localStorage.getItem("user"));
+    const [services, setServices] = useState(null);
+    
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const url = `${BASE_URL}/service`;
+        axios.get(url)
+            .then(resp => {
+                setServices(resp.data)
+            })
+            .catch(err => {
+                console.log(err.response.data)
+            })
+    }, [])
+
+    function seeMore(service){
+        //console.log(service)
+        navigate(`/service/${service.serviceId}`, {state: service})
+    }
+
     return(
-        <HomeContainer>
+        <HomeContainer tipo={services ? 'flex-start' : 'center'}>
             <Header />
-            <ServicesContainer>
-                <img src={Logo} />
-                <h1>Soluções em nuvem</h1>
-                <p>Soluções para armazenamento e compartilhamento de informações em nuvem​</p>
-                <button>MAIS</button>
-            </ServicesContainer>
-            <ServicesContainer>
-                <img src={Logo} />
-                <h1>Soluções em nuvem</h1>
-                <p>Soluções para armazenamento e compartilhamento de informações em nuvem​</p>
-                <button>MAIS</button>
-            </ServicesContainer>
-            <ServicesContainer>
-                <img src={Logo} />
-                <h1>Soluções em nuvem</h1>
-                <p>Soluções para armazenamento e compartilhamento de informações em nuvem​</p>
-                <button>MAIS</button>
-            </ServicesContainer>
+            {services ? 
+            services.map(service => (
+                <ServicesContainer key={service.serviceId}>
+                    <img src={service.image} />
+                    <h1>{service.serviceName}</h1>
+                    <p>{service.description.split(' ').length > 10 ?  `${service.description.split(' ').slice(0, 10).join(' ')}...` : service.description}​</p>
+                    <button onClick={() => seeMore(service)}>MAIS</button>
+                </ServicesContainer>
+                )
+            )
+            : 
+            <p>Não tem nenhum serviço disponível no momento​</p>}
         </HomeContainer>
     )
 }
@@ -35,18 +52,14 @@ const HomeContainer = styled.section`
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: ${props => props.tipo};
     align-items: center;
+    text-align: center;
     padding-left: 33px;
     padding-right: 33px;
     overflow-y: scroll;
     padding-top: 70px;
     padding-bottom: 15px;
-    img{
-        width: 80%;
-        padding-bottom: 10px;
-        padding-top: 0px;
-    }
     a{
         font-weight: 700;
         font-size: 15px;
@@ -56,6 +69,7 @@ const HomeContainer = styled.section`
         padding: 18px;
     }
 `
+
 const ServicesContainer = styled.div`
     background-color: white;
     display: flex;
@@ -70,11 +84,14 @@ const ServicesContainer = styled.div`
         font-weight: 600;
         font-size: 24px;
         color: #358dcc;
-        margin-bottom: 15px;
+        margin: 0px 20px 15px 20px;
     }
     img{
         width: 80%;
-        margin-top: 15px;
+        margin-top: 22px;
+        padding: 0px;
+        margin-bottom: 10px;
+        border-radius: 7px;
     }
     p{
         text-align: center;

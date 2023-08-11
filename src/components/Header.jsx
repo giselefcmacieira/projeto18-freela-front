@@ -5,11 +5,13 @@ import { IoEnterOutline } from "react-icons/io5"
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { GoHome } from "react-icons/go"
 
-export default function Header(){
+export default function Header(props){
     const navigate = useNavigate();
     const [out, setOut] = useState(false);
     const {user, setUser} = useContext(UserContext)
+    const {needHome} = props
     //console.log(user)
     //const user = JSON.parse(localStorage.getItem("user")) //{name, token}
 
@@ -28,6 +30,11 @@ export default function Header(){
         <Topo>
             <p>{user ? `Olá, ${user.name}!` : `Olá!`}</p>
             <div>
+                {needHome ? 
+                    <GoHome style={settingsStyle} onClick={() => navigate('/')}/>
+                    :
+                    ''
+                }
                 <IoSettingsOutline style={settingsStyle}/>
                 {user ? 
                     <IoExitOutline onClick={exit} style={exitStyle}/> 
@@ -71,18 +78,18 @@ const Topo = styled.div`
 `
 
 const exitStyle = {
-    fontSize: "30px",
+    fontSize: "25px",
     fontWeight: 'bold',
     //color: 'black',
     fill: 'black',
-    marginLeft: "5%"
+    marginLeft: "5px"
 }
 
 const settingsStyle = {
-    fontSize: "30px",
+    fontSize: "25px",
     fontWeight: 'bold',
     //color: 'black',
     fill: 'black',
-    marginLeft: "5%",
-    marginRight: "5%"
+    marginLeft: "5px",
+    marginRight: "5px"
 }
