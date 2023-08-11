@@ -12,22 +12,28 @@ export default function UserServicesPage () {
     const {user, setUser} = useContext(UserContext);
     const [userServices, setUserServices] = useState(null)
     const [availabilityChanged, setAvailabilityChanged] = useState(false)
+    const [serviceDeleted, setServiceDeleted] = useState(false)
     const navigate = useNavigate();
 
     useEffect(() => {
+        if(!user){
+            return navigate('/')
+        }
         const url = `${BASE_URL}/service/me`;
         const config = {headers: {'Authorization': `Bearer ${user.token}`}};
         axios.get(url, config)
             .then(resp => {
                 setUserServices(resp.data)
+                console.log(resp.data.length)
             })
             .catch(err => {
                 console.log(err.response.data)
             })
-    }, [availabilityChanged])
+    }, [availabilityChanged, serviceDeleted])
+
 
     return(
-        <UserServicePageContainer tipo={userServices ? 'flex-start' : 'center'}>
+        <UserServicePageContainer>
             <Header needHome = 'true'/> 
             <AddService onClick = {() => navigate("/addservice")}>Cadastrar novo serviço</AddService>
             {userServices ? 
@@ -37,10 +43,12 @@ export default function UserServicesPage () {
                     service={service} 
                     availabilityChanged={availabilityChanged} 
                     setAvailabilityChanged={setAvailabilityChanged}
+                    serviceDeleted={serviceDeleted}
+                    setServiceDeleted={setServiceDeleted}
                 />
             ))
             : 
-            <p>Você ainda não tem nenhum serviço cadastrado​</p>}
+            <Message>Você ainda não tem nenhum serviço cadastrado​</Message>}
         </UserServicePageContainer>
     )
 }
@@ -50,7 +58,7 @@ const UserServicePageContainer = styled.section`
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: ${props => props.tipo};
+    justify-content: flex-start;
     align-items: center;
     padding-left: 33px;
     padding-right: 33px;
@@ -72,4 +80,7 @@ const AddService = styled.button`
     height: 45px;
     margin-bottom: 0px;
     margin-top: 15px;
+`
+const Message = styled.p`
+    margin-top: 65%;
 `

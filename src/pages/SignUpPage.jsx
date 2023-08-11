@@ -1,6 +1,6 @@
 import { styled } from "styled-components"
 import logo from "../assets/logo-transparente-croped.png"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../constants/urls";
@@ -20,6 +20,8 @@ export default function SignUpPage(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
+
+    const navigate = useNavigate();
 
     function search (event){
         event.preventDefault()
@@ -70,6 +72,7 @@ export default function SignUpPage(){
             axios.post(url, body)
                 .then(resp => {
                     console.log(resp.data)
+                    navigate('/signin')
                 })
                 .catch(err => {
                     alert(err.response.data)

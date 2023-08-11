@@ -36,9 +36,6 @@ export default function HomePage(){
         navigate(`/service/${service.serviceId}`, {state: service})
     }
 
-    console.log(services)
-    console.log(services.length)
-
     return(
         <HomeContainer tipo={services.length !== 0 ? 'flex-start' : 'center'}>
             <Header />

@@ -23,7 +23,21 @@ export default function Header(props){
             setUser(null);
             const outt = !out;
             setOut(outt);
+            navigate('/')
         }
+    }
+
+    function goToSettings(event){
+        event.preventDefault();
+        if(user){
+            navigate('/service/me')
+        }else{
+            const confirmation = confirm('Para acessar está página é necessário fazer login. Fazer login?');
+            if(confirmation){
+                navigate('/signin')
+            }
+        }
+        
     }
 
     return(
@@ -35,7 +49,7 @@ export default function Header(props){
                     :
                     ''
                 }
-                <IoSettingsOutline onClick={() => navigate('/service/me')} style={settingsStyle}/>
+                <IoSettingsOutline onClick={goToSettings} style={settingsStyle}/>
                 {user ? 
                     <IoExitOutline onClick={exit} style={exitStyle}/> 
                     : 

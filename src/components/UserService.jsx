@@ -5,18 +5,19 @@ import { BASE_URL } from "../constants/urls";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
+import { FaTrash } from "react-icons/fa"
 
 
 export default function UserService(props){
-    const {service, availabilityChanged, setAvailabilityChanged} = props;
+    const {service, availabilityChanged, setAvailabilityChanged, serviceDeleted, setServiceDeleted} = props;
 
     const {user, setUser} = useContext(UserContext);
 
     //console.log(service.serviceId)
 
-    function changeAvailability(serviceId){
-        const url = `${BASE_URL}/service/availability/${serviceId}`;
-        console.log(url)
+    function changeAvailability(event){
+        console.log(event);
+        const url = `${BASE_URL}/service/availability/${service.serviceId}`;
         const config = {headers: {'Authorization': `Bearer ${user.token}`}};
         axios.put(url, {}, config)
             .then(resp => {
@@ -29,6 +30,23 @@ export default function UserService(props){
             })
     }
 
+    function deleteService(event){
+        event.stopPropagation();
+        const url = `${BASE_URL}/service/${service.serviceId}`;
+        const config = {headers: {'Authorization': `Bearer ${user.token}`}};
+        const confirmation = confirm(`Deseja excluir permanentemente o serviço ${service.serviceName}?`)
+        if(confirmation){
+            axios.delete(url, config)
+            .then(resp => {
+                console.log(resp.data)
+                const aux = !serviceDeleted
+                setServiceDeleted(aux)
+            })
+            .catch(err => {
+                console.log(err.message.data)
+            })
+        }
+    }
     return(
         <UserServiceContainer>
             <img src={service.image}/>
@@ -37,8 +55,11 @@ export default function UserService(props){
                 <p><strong>Preço:</strong> R$ {(service.price/100).toFixed(2).toString().replace('.',',')}</p>
                 <Availability available={service.available ? 'green' : 'red'}>{service.available ? 'Disponível' : 'Indisponível'}</Availability>
             </InfoContainer>
-            <CheckContainer color={service.available ? 'green' : '#767171'} onClick={() => changeAvailability(service.serviceId)}>
-                {service.available ? <BsCheckCircle></BsCheckCircle> : <BsCircle></BsCircle>}
+            <CheckContainer color={service.available ? 'green' : '#767171'} onClick={changeAvailability}>
+                <TrashContainer>
+                    <FaTrash onClick={deleteService}></FaTrash>
+                </TrashContainer>
+                {service.available ? <BsCheckCircle style={Style}></BsCheckCircle> : <BsCircle style={Style}></BsCircle>}
             </CheckContainer>
         </UserServiceContainer>
     )
@@ -119,4 +140,16 @@ const CheckContainer = styled.div`
     cursor: pointer;
     margin-bottom: 15px;
     margin-top: 10px;
+    height: 100%;
+    position: relative;
 `
+const TrashContainer = styled.div`
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 16px;
+    color: #ed9200;
+`
+const Style = {
+    marginTop: "28px"
+}
