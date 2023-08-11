@@ -7,9 +7,9 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
     }
     h1 {
-        font-weight: 700;
-        font-size: 26px;
-        color: white;
+        font-weight: 600;
+        font-size: 22px;
+        color: #358dcc;
     }
     a {
         font-weight: 700;

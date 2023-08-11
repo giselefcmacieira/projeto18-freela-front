@@ -1,9 +1,10 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { styled } from "styled-components"
 import logo from "../assets/logo-transparente-croped.png"
 import { BASE_URL } from "../constants/urls";
+import { UserContext } from "../contexts/UserContext"
 
 
 export default function SignInPage(){
@@ -11,6 +12,8 @@ export default function SignInPage(){
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const {user, setUser} = useContext(UserContext)
 
 
     function signIn(event){
@@ -23,8 +26,8 @@ export default function SignInPage(){
         }
         axios.post(url, body)
             .then(resp => {
-                console.log(resp.data)
                 localStorage.setItem("user", JSON.stringify(resp.data));
+                setUser(resp.data)
                 navigate('/');
             })
             .catch(err => {
