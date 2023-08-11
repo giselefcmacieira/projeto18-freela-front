@@ -5,6 +5,8 @@ import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
 import UserProvider from "./contexts/UserContext";
 import ServicePage from "./pages/ServicePage";
+import UserServicesPage from "./pages/UserServicesPage";
+import RegisterNewServicePage from "./pages/RegisterNewServicePage";
 
 export default function App() {
 
@@ -17,6 +19,8 @@ export default function App() {
             <Route path="/signup" element = {<SignUpPage />}/>
             <Route path="/signin" element = {<SignInPage />}/>
             <Route path='/service/:id' element ={<ServicePage />} />
+            <Route path="/service/me" element = {<UserServicesPage />} />
+            <Route path="/addservice" element = {<RegisterNewServicePage />} />
           </Routes>
         </UserProvider>
       </BrowserRouter>

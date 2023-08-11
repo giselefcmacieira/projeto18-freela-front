@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 
 
 export default function HomePage(){
-    const [services, setServices] = useState(null);
+    const [services, setServices] = useState([]);
     
     const navigate = useNavigate();
 
@@ -25,13 +25,24 @@ export default function HomePage(){
 
     function seeMore(service){
         //console.log(service)
+        const url = `${BASE_URL}/service/visits/${service.serviceId}`
+        axios.put(url)
+            .then(resp => {
+                console.log(resp.data)
+            })
+            .catch(err => {
+                console.log(err.response.data)
+            })
         navigate(`/service/${service.serviceId}`, {state: service})
     }
 
+    console.log(services)
+    console.log(services.length)
+
     return(
-        <HomeContainer tipo={services ? 'flex-start' : 'center'}>
+        <HomeContainer tipo={services.length !== 0 ? 'flex-start' : 'center'}>
             <Header />
-            {services ? 
+            {services.length !== 0 ? 
             services.map(service => (
                 <ServicesContainer key={service.serviceId}>
                     <img src={service.image} />

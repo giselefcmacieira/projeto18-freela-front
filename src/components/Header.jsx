@@ -35,7 +35,7 @@ export default function Header(props){
                     :
                     ''
                 }
-                <IoSettingsOutline style={settingsStyle}/>
+                <IoSettingsOutline onClick={() => navigate('/service/me')} style={settingsStyle}/>
                 {user ? 
                     <IoExitOutline onClick={exit} style={exitStyle}/> 
                     : 
