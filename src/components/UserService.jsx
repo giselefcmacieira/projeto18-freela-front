@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 import { BsCircle } from "react-icons/bs"
 import {BsCheckCircle} from "react-icons/bs"
-import { BASE_URL } from "../constants/urls";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
@@ -13,15 +12,14 @@ export default function UserService(props){
 
     const {user, setUser} = useContext(UserContext);
 
+    const BASE_URL = import.meta.env.VITE_API_URL
     //console.log(service.serviceId)
 
     function changeAvailability(event){
-        console.log(event);
         const url = `${BASE_URL}/service/availability/${service.serviceId}`;
         const config = {headers: {'Authorization': `Bearer ${user.token}`}};
         axios.put(url, {}, config)
             .then(resp => {
-                console.log(resp.data)
                 const aux = !availabilityChanged
                 setAvailabilityChanged(aux)
             })

@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react"
 import { styled } from "styled-components";
 import Header from "../components/Header";
 import { UserContext } from "../contexts/UserContext"
-import { BASE_URL } from "../constants/urls";
 import axios from "axios";
 import UserService from "../components/UserService";
 import { useNavigate } from "react-router";
@@ -14,6 +13,8 @@ export default function UserServicesPage () {
     const [availabilityChanged, setAvailabilityChanged] = useState(false)
     const [serviceDeleted, setServiceDeleted] = useState(false)
     const navigate = useNavigate();
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         if(!user){

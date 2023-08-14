@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { styled } from "styled-components";
 import Header from "../components/Header";
-import { BASE_URL } from "../constants/urls";
 import { UserContext } from "../contexts/UserContext";
 
 
@@ -14,6 +13,8 @@ export default function RegisterNewServicePage(){
     const [image, setImage] = useState('')
     const {user, setUser} = useContext(UserContext);
     const navigate = useNavigate();
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     function registerNewService(event){
         event.preventDefault()

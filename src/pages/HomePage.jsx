@@ -1,8 +1,6 @@
 import { styled } from "styled-components"
 import Header from "../components/Header";
-import Logo from "../assets/logo-transparente-croped.png"
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../constants/urls";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
@@ -11,6 +9,8 @@ export default function HomePage(){
     const [services, setServices] = useState([]);
     
     const navigate = useNavigate();
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const url = `${BASE_URL}/service`;

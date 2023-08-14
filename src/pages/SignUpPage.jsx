@@ -3,7 +3,6 @@ import logo from "../assets/logo-transparente-croped.png"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "../constants/urls";
 
 export default function SignUpPage(){
 
@@ -22,6 +21,8 @@ export default function SignUpPage(){
     const [confPassword, setConfPassword] = useState('');
 
     const navigate = useNavigate();
+
+    const BASE_URL = import.meta.env.VITE_API_URL
 
     function search (event){
         event.preventDefault()

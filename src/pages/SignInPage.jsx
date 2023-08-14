@@ -3,7 +3,6 @@ import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { styled } from "styled-components"
 import logo from "../assets/logo-transparente-croped.png"
-import { BASE_URL } from "../constants/urls";
 import { UserContext } from "../contexts/UserContext"
 
 
@@ -14,6 +13,8 @@ export default function SignInPage(){
     const [password, setPassword] = useState('')
 
     const {user, setUser} = useContext(UserContext)
+
+    const BASE_URL = import.meta.env.VITE_API_URL;
 
 
     function signIn(event){
